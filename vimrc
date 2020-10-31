@@ -6,7 +6,7 @@
 
 call plug#begin('/Users/xenocide/.vim/autoload')
 
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 
 Plug 'preservim/nerdcommenter'
@@ -138,7 +138,7 @@ nnoremap <leader>k :wincmd k<CR>
 nnoremap <leader>l :wincmd l<CR>
 
 " Press * to search for the term and then 'r' to replace
-" each occurence of that word
+" each occurence of that word in that file
 nnoremap <leader>r :s///g<left><left>
 
 " Press Space to turn off highlighting and clear any message already displayed.
@@ -161,6 +161,18 @@ noremap <leader>0 :tablast<cr>
 augroup quickfix_tab | au!
   au filetype qf nnoremap <buffer> <C-t> <C-w><CR><C-w>T
 augroup END
+
+" Use K to show documentation (used by coc)
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
 
 """""""""""""""""""""""""""""""""""""""
 "            Misc                     "
