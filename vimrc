@@ -6,6 +6,7 @@
 
 call plug#begin('/Users/xenocide/.vim/autoload')
 
+set rtp+=/usr/local/opt/fzf
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 
@@ -16,9 +17,9 @@ Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
-Plug 'valloric/youcompleteme'
+" Plug 'valloric/youcompleteme'
 " Check if this is working properly
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'morhetz/gruvbox'
 Plug 'ntpeters/vim-better-whitespace'
@@ -115,11 +116,31 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme = 'dark'
 set ttimeoutlen=0
 
+" coc mappings
 " GoTo code navigation
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+
+" Use tab for trigger completion with characters ahead and navigate.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
 
 """""""""""""""""""""""""""""""""""""""
 "             Mappings                "
@@ -157,10 +178,11 @@ noremap <leader>8 8gt
 noremap <leader>9 9gt
 noremap <leader>0 :tablast<cr>
 
-
-augroup quickfix_tab | au!
-  au filetype qf nnoremap <buffer> <C-t> <C-w><CR><C-w>T
-augroup END
+" Ctrl+p to open fzf, search for your file
+" and Ctrl+t to open in new tab
+" augroup quickfix_tab | au!
+"   au filetype qf nnoremap <buffer> <C-t> <C-w><CR><C-w>T
+" augroup END
 
 " Use K to show documentation (used by coc)
 nnoremap <silent> K :call <SID>show_documentation()<CR>
