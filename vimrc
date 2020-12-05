@@ -7,8 +7,9 @@
 call plug#begin('/Users/xenocide/.vim/autoload')
 
 set rtp+=/usr/local/opt/fzf
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'yuki-ycino/fzf-preview.vim', { 'branch': 'release', 'do': ':UpdateRemotePlugins'}
+" Plug 'junegunn/fzf.vim'
 
 Plug 'preservim/nerdcommenter'
 
@@ -19,7 +20,7 @@ Plug 'vim-airline/vim-airline-themes'
 
 " Plug 'valloric/youcompleteme'
 " Check if this is working properly
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'morhetz/gruvbox'
 Plug 'ntpeters/vim-better-whitespace'
