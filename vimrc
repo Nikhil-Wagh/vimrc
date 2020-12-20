@@ -16,10 +16,15 @@ Plug 'preservim/nerdcommenter'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
+" Autocomplete
 " Closes fzf preview window for some reason
 " Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'Valloric/YouCompleteMe'
 
+" Colors
 Plug 'morhetz/gruvbox'
+Plug 'pineapplegiant/spaceduck'
+
 Plug 'ntpeters/vim-better-whitespace'
 
 Plug 'haya14busa/is.vim'
@@ -28,6 +33,8 @@ Plug 'haya14busa/is.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
 
+" Better syntax highlighting
+Plug 'sheerun/vim-polyglot'
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""
@@ -76,7 +83,7 @@ set cursorline
 hi CursorLine term=bold cterm=bold guibg=Grey40
 
 " set background colour for gruvbox
-let g:gruvbox_termcolors=16
+let g:gruvbox_termcolors=256
 colorscheme gruvbox
 set background=dark
 
