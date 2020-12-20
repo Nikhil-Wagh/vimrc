@@ -17,8 +17,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 " Closes fzf preview window for some reason
-" Plug 'neoclide/coc.nvim', {'branch': 'master',
-  " \ 'do': 'yarn install --frozen-lockfile'}
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'morhetz/gruvbox'
 Plug 'ntpeters/vim-better-whitespace'
@@ -56,12 +55,14 @@ set termguicolors
 set scrolloff=8
 set showmatch
 set completeopt=menuone,noinsert,noselect
+set hidden
+set nowritebackup
 
 " Give more space for displaying messages.
 set cmdheight=2
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
-set updatetime=50
+set updatetime=300
 
 set colorcolumn=80
 highlight ColorColumn ctermbg=0 guibg=lightgrey
