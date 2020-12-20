@@ -1,32 +1,27 @@
 " TODO
 " - Color of tabline in sync with bottom bar
 " - Copy the word to clipboard - quickly
-" - bookmarks and a quick way to toggle them and cycle between them
 " - Show which function or class I'm in
+" - Fix coc.nvim
 
 call plug#begin('/Users/xenocide/.vim/autoload')
 
 set rtp+=/usr/local/opt/fzf
+
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'yuki-ycino/fzf-preview.vim', { 'branch': 'release', 'do': ':UpdateRemotePlugins'}
-" Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf.vim'
 
 Plug 'preservim/nerdcommenter'
-
-" cs"' -> to change " to '
-Plug 'tpope/vim-surround'
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
-" Plug 'valloric/youcompleteme'
-" Check if this is working properly
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Closes fzf preview window for some reason
+" Plug 'neoclide/coc.nvim', {'branch': 'master',
+  " \ 'do': 'yarn install --frozen-lockfile'}
 
 Plug 'morhetz/gruvbox'
 Plug 'ntpeters/vim-better-whitespace'
-
-Plug 'jremmen/vim-ripgrep'
 
 Plug 'haya14busa/is.vim'
 
@@ -45,9 +40,7 @@ syntax on
 set guicursor=
 set relativenumber
 set hlsearch
-" set hidden
 set noerrorbells
-" set tab width 2
 set tabstop=2 softtabstop=2
 set shiftwidth=2
 set expandtab
@@ -83,28 +76,34 @@ hi CursorLine term=bold cterm=bold guibg=Grey40
 
 " set background colour for gruvbox
 let g:gruvbox_termcolors=16
+colorscheme gruvbox
+set background=dark
 
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
 
-colorscheme gruvbox
-set background=dark
-
-
 " Ripgrep
 if executable('rg')
   let g:rg_derive_root='true'
+  let g:rg_highlight='true'
 endif
+
+" ---------------  FZF Settings   ------------------
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8 } }
+let g:fzf_preview_window = 'down:70%'
+
+" - Popup window
+command! -bang -nargs=? -complete=dir Files
+  \ call fzf#vim#files(<q-args>, {'options': ['--layout=reverse',
+  \ '--info=inline', '--preview', '~/.vim/autoload/fzf.vim/bin/preview.sh {}']},
+  \ <bang>0)
 
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
-  \ "rg --column --line-number --no-heading --color=always --smart-case " .
-  \ <q-args>, 1, fzf#vim#with_preview(), <bang>0)
-
-" Silver Searcher
-" if executable('ag')
-  " let g:ctrlp_use_caching = 0
-" endif
+  \ 'rg --column --line-number --color=always --smart-case '
+  \ .shellescape(<q-args>), 1,
+  \ fzf#vim#with_preview(), <bang>0)
+" ---------------  FZF Settings   ------------------
 
 let loaded_matchparen = 1
 let mapleader = " "
@@ -115,38 +114,12 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme = 'dark'
 set ttimeoutlen=0
 
-" coc mappings
-" GoTo code navigation
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-" Use tab for trigger completion with characters ahead and navigate.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use <c-space> to trigger completion.
-if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
-else
-  inoremap <silent><expr> <c-@> coc#refresh()
-endif
-
 """""""""""""""""""""""""""""""""""""""
 "             Mappings                "
 """""""""""""""""""""""""""""""""""""""
 
 " FZF Mapping
-nnoremap <silent> <C-p> :FZF<CR>
+nnoremap <silent> <C-p> :Files<CR>
 
 " RipGrep search
 nnoremap <leader>pw :Rg <C-R>=expand("<cword>")<CR><CR>
@@ -157,8 +130,13 @@ nnoremap <leader>j :wincmd j<CR>
 nnoremap <leader>k :wincmd k<CR>
 nnoremap <leader>l :wincmd l<CR>
 
-" Press * to search for the term and then 'r' to replace
+
+" Press * to search for the term and then 'ra' to replace
 " each occurence of that word in that file
+nnoremap <leader>ra :%s///g<left><left>
+
+" Press * to search for the term and then 'r' to replace
+" each occurence of that word in that line
 nnoremap <leader>r :s///g<left><left>
 
 " Press Space to turn off highlighting and clear any message already displayed.
@@ -183,17 +161,6 @@ noremap <leader>0 :tablast<cr>
 "   au filetype qf nnoremap <buffer> <C-t> <C-w><CR><C-w>T
 " augroup END
 
-" Use K to show documentation (used by coc)
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
-    call CocActionAsync('doHover')
-  else
-    execute '!' . &keywordprg . " " . expand('<cword>')
-  endif
-endfunction
 
 """""""""""""""""""""""""""""""""""""""
 "            Misc                     "
