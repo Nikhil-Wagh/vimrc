@@ -13,6 +13,7 @@ Plug 'yuki-ycino/fzf-preview.vim', { 'branch': 'release', 'do': ':UpdateRemotePl
 
 Plug 'preservim/nerdcommenter'
 
+" cs"' -> to change " to '
 Plug 'tpope/vim-surround'
 
 Plug 'vim-airline/vim-airline'
@@ -52,8 +53,6 @@ set shiftwidth=2
 set expandtab
 set smartindent
 set nu
-" I want the wrapping
-" set nowrap
 set smartcase
 set noswapfile
 set nobackup
@@ -63,7 +62,6 @@ set incsearch
 set termguicolors
 set scrolloff=8
 set showmatch
-" set noshowmode
 set completeopt=menuone,noinsert,noselect
 
 " Give more space for displaying messages.
